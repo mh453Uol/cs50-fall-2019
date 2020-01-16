@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<form action="/display_board" method="post" class="needs-validation" novalidate>
+    <button class="btn btn-success col-12 save-button"  type="submit">Save</button>
+        <input type="hidden" name="organisation" value="{{model.organisation}}">
+
+        {% for i in model.display.prayers %}
+            <div class="form-group row">
+                <label for="{{i.name}}" class="col-sm-2 col-form-label">{{i.display_name}}</label>
+                <div class="col-sm-9">
+                  <input type="time" class="form-control" name="time[]" value="{{i.get_time() if i.get_time()}}" id="{{i.name}}" data-is-displayed="{{i.is_displayed}}" {{'readonly' if not i.is_displayed }}>
+                  <div class="invalid-feedback">
+                      Field is required!
+                  </div>
+                </div>
+
+                <div class="col-sm-1">
+                  {% if i.is_displayed %}
+                    <button class="btn btn-warn" type="button" onclick="toggleVisibility('{{i.name}}',this)">Hide</button>
+                    <input type="hidden" id="{{i.name}}-is-displayed" name="is_displayed[]" value="1">
+                  {% endif %}
+
+                  {% if not i.is_displayed %}
+                    <button class="btn btn-warn" type="button" onclick="toggleVisibility('{{i.name}}',this)">Show</button>
+                    <input type="hidden" id="{{i.name}}-is-displayed" name="is_displayed[]" value="0">
+                  {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+</form>
+
+<script>
+
+  function toggleVisibility(field, currentState) {
+    input = document.getElementById(field+"-is-displayed");
+    field = document.getElementById(field);
+
+    if(currentState.textContent == "Show") {
+      field.dataset.isDisplayed = true;
+      field.readOnly = false;
+      input.value = "1"
+      currentState.textContent = "Hide"
+    } else {
+      field.dataset.isDisplayed = false;
+      field.readOnly = true;
+      input.value = "0"
+      currentState.textContent = "Show"
+    }
+  }
+
+  var fields = document.querySelectorAll('input.form-control');
+
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+
+        var field = fields[0];
+        var isValid = true;
+
+        for(let i = 0; i < fields.length; i++) {
+          field = fields[i];
+
+          if(field.dataset.isDisplayed == "true" && !field.value) {
+            isValid = false;
+          }
+        }
+
+        if (form.checkValidity() === false || !isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        form.classList.add('was-validated');
+    }, false);
+    });
+  }, false);
+})();
+
+</script>
+
+{% endblock %}
+

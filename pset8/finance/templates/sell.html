@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form class="needs-validation" action="/sell" method="post" novalidate>
+        <div class="form-group">
+            <select class="form-control"  name="symbol" required onchange="onStockSelected(this)">
+                {% for share in model.remaining %}
+                    <option value="{{ share.purchased_symbol }}" data-remaining-shares="{{share.remaining_shares}}">{{ share.purchased_symbol }} - ({{share.remaining_shares}})</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">Symbol is required if you want to find the price</div>
+        </div>
+        <div class="form-group">
+            <input id="js-shares" name="shares" oninput="onEnterShares(this)" class="form-control" placeholder="Number Of Share" type="number" min="1" required>
+            <div id="js-shares-feedback" class="invalid-feedback"></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Sell Shares</button>
+    </form>
+
+<script>
+    shares = {}
+
+    let options = document.querySelectorAll("option");
+
+    options.forEach((option) => {
+       shares[option.value] = {
+           message: 'Share must be betweeen 1 to ' + option.dataset.remainingShares,
+           valid: (value) => { return value >= 1 && value <= option.dataset.remainingShares; }
+       }
+    });
+
+    function onStockSelected(e) {
+        const selectedOption = e.selectedOptions[0].value;
+        const input = document.getElementById("js-shares");
+
+        this.validate(input, selectedOption);
+    }
+
+    function onEnterShares(e) {
+        const value = parseInt(e.value);
+        const selectedOption = document.querySelector("select").selectedOptions[0].value;
+
+        this.validate(e, selectedOption);
+    }
+
+    function updateInvalidFeedback(validationMessage) {
+        const feedback = document.getElementById("js-shares-feedback");
+        feedback.innerText = validationMessage;
+    }
+
+    function validate(input, selectedOption) {
+        const value = parseInt(input.value)
+        const sharesAmountValid = shares[selectedOption].valid(value);
+
+        if (sharesAmountValid) {
+            input.setCustomValidity("");
+        } else {
+            input.setCustomValidity(shares[selectedOption].message)
+        }
+
+        this.updateInvalidFeedback(input.validationMessage)
+    }
+
+    this.onStockSelected(document.querySelector("select"))
+</script>
+
+{% endblock %}

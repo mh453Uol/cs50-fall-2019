@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+{{model}}
+
+{% if model['errors'] == True %}
+<h1>Welcome</h1>
+{% endif %}
+
+{% if model['errors'] == False %}
+<h2>Registered {{model['name']}}</h2>
+{% endif %}
+
+<form action="./person" method="post">
+    <input type="text" name="name" placeholder="Name" value="{{model['name']}}">
+    <select name="dorm">
+        <option value="A" {% if model['dorm'] == 'A' %}selected{% endif %}>A</option>
+        <option value="B" {% if model['dorm'] == 'B' %}selected{% endif %}>B</option>
+    </select>
+    {% if model['errors'] == True %}
+    <button type="submit" >Submit</button>
+    {% endif %}
+
+</form>
+
+<script>
+    document.querySelector('form').onsubmit = function() {
+        if(!document.querySelector('input').value) {
+            alert("You must provide your name!");
+            return false;
+        }
+
+        if(!document.querySelector('select').value) {
+            alert('Yout must provide your dorm!')
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+
+{% endblock %}
+

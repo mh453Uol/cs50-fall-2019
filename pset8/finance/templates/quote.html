@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form class="needs-validation" action="/quote" method="post" novalidate>
+        <div class="form-group">
+            <input class="form-control" name="symbol" placeholder="Symbol i.e AAPL (Apple)" type="text" required>
+            <small id="emailHelp" class="form-text text-muted">Find Symbols for companies <a href="https://www.advfn.com/nasdaq/nasdaq.asp">here</a></small>
+            <div class="invalid-feedback">Symbol is required if you want to find the price</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Find Price</button>
+    </form>
+{% endblock %}

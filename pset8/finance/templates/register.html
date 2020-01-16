@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <!-- oninput='onFormInput()' onkeyup="usernameExists(this)" --->
+    <form class="needs-validation" action="/register" method="post" novalidate>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text" required>
+            <div class="invalid-feedback" id="js-username-feedback">Username is required</div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password" required>
+            <div class="invalid-feedback">Password is required</div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password" required>
+            <div class="invalid-feedback" id="js-confirm-password-invalid-feedback"></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Log In</button>
+    </form>
+
+    <script>
+        function onFormInput() {
+            const confirmation = document.getElementsByName("confirmation")[0];
+            const password = document.getElementsByName("password")[0];
+
+            if(!confirmation.value) {
+                confirmation.setCustomValidity("Confirm password is required");
+            } else if (confirmation.value != password.value) {
+                confirmation.setCustomValidity("Passwords do not match");
+            } else {
+                confirmation.setCustomValidity("");
+            }
+
+            const feedback = document.getElementById("js-confirm-password-invalid-feedback");
+            feedback.innerText = confirmation.validationMessage;
+        }
+
+        function validationUsername(unique) {
+            const username = document.getElementsByName("username")[0];
+
+            if (!username.value) {
+                username.setCustomValidity("Username is required");
+            } else if(!unique) {
+                username.setCustomValidity("Username already exists");
+            } else {
+                // username is valid
+                username.setCustomValidity("");
+            }
+
+            const feedback = document.getElementById("js-username-feedback");
+            feedback.innerText = username.validationMessage;
+        }
+
+        function usernameExists(e) {
+            const username = e.value;
+            $.get(`/check?username=${username}`, function(response) {
+                validationUsername(response);
+            });
+        }
+    </script>
+{% endblock %}

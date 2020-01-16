@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Price
+{% endblock %}
+
+{% block main %}
+    A share of {{ model["name"] }} ({{ model["symbol"] }}) costs {{ model["price"] | usd }}
+{% endblock %}

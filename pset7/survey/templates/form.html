@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <h1 class="display-4 text-center">{{ model.month }} {{ model.year }}</h1>
+
+    <!-- http://getbootstrap.com/docs/4.1/components/buttons/ -->
+    <ul class="nav nav-pills justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 1 }}" href="./1">Jan</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 2}}" href="./2">Feb</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 3 }}" href="./3">Mar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex  == 4}}" href="./4">Apr</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 5}}" href="./5">May</a>
+      </li>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 6}}" href="./6">Jun</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 7}}" href="./7">Jul</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 8}}" href="./8">Aug</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 9}}" href="./9">Sep</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 10}}" href="./10">Oct</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 11}}" href="./11">Nov</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if model.monthIndex == 12}}" href="./12">Dec</a>
+      </li>
+    </ul>
+
+    <form action="/form" method="post">
+        <button class="btn btn-success col-12 save-button"  type="submit">Save</button>
+        <div class="table-responsive">
+            <input type="hidden" name="monthIndex" value="{{model.monthIndex}}">
+            <input type="hidden" name="year" value="{{model.year}}">
+            <input type="hidden" name="overridingBeginningTimes" value="0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Day</th>
+                        <th scope="col">Begin Fajr</th>
+                        <th scope="col">Jamaat Fajr</th>
+                        <th scope="col">Dahwa e Kubra</th>
+                        <th scope="col">Begin Zuhr</th>
+                        <th scope="col">Jamaat Zuhr</th>
+                        <th scope="col">Begin Asr</th>
+                        <th scope="col">Jamaat Asr</th>
+                        <th scope="col">Magrib</th>
+                        <th scope="col">Begin Isha</th>
+                        <th scope="col">Jamaat Isha</th>
+                    </tr>
+                    <tbody>
+                    {% for i in model.prayers %}
+                        <tr>
+                            <th scope="row">{{i.date.strftime('%d %a')}}</th>
+                            <td><input type="time" name="beginFajr[]" class="form-control" disabled></td>
+                            <td><input type="time" name="jamaatFajr[]" class="form-control" value="{{i.getFajr() or ''}}"></td>
+                            <td><input type="time" name="dahwaEkubra[]" class="form-control" disabled></td>
+                            <td><input type="time" name="beginZuhr[]" class="form-control" disabled></td>
+                            <td><input type="time" name="jamaatZuhr[]" class="form-control" value="{{i.getZuhr() or ''}}"></td>
+                            <td><input type="time" name="beginAsr[]" class="form-control" disabled></td>
+                            <td><input type="time" name="jamaatAsr[]" class="form-control" value="{{i.getAsr() or ''}}"></td>
+                            <td><input type="time" name="jamaatMagrib[]" class="form-control" value="{{i.getMagrib() or ''}}"></td>
+                            <td><input type="time" name="beginIsha[]" class="form-control" disabled></td>
+                            <td><input type="time" name="jamaatIsha[]" class="form-control" value="{{i.getIsha() or ''}}"></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </thead>
+            </table>
+        </div>
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">Symbol</th>
+          <th scope="col">Name</th>
+          <th scope="col">Shares</th>
+          <th scope="col">Purchased Share Price At</th>
+          <th scope="col">Current Share Price At</th>
+          <th scope="col">Profit</th>
+          <th scope="col" title="Current Share Price At x Purchased Shares">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in model["purchases"] %}
+        <tr>
+          <th scope="row">{{ purchase.purchased_symbol }}</th>
+          <td>{{ purchase.name }}</td>
+          <td>{{ purchase.remaining_shares }}</td>
+          <td>{{ purchase.purchased_share_price | usd }}</td>
+          <td>{{ purchase.current_share_price | usd }}</td>
+          <td>{{ purchase.profit | usd }}</td>
+          <td>{{ purchase.total_current_price | usd }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <th scope="row">CASH</th>
+          <td colspan="6" style="text-align:right"><b>{{ model.user_cash | usd }}</b></td>
+        </tr>
+        <tr>
+          <th scope="row"></th>
+          <td colspan="6" style="text-align:right"><b>{{ model.grand_total | usd }}</b></td>
+        </tr>
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}

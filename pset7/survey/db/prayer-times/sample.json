@@ -1,0 +1,38 @@
+{
+    "January": [
+        {
+            "asr": null,
+            "date": "2019-01-01T00:00:00",
+            "fajr": "1900-01-01T12:12:00",
+            "isha": null,
+            "magrib": null,
+            "zuhr": null
+        },
+        {
+            "asr": null,
+            "date": "2019-01-02T00:00:00",
+            "fajr": null,
+            "isha": null,
+            "magrib": null,
+            "zuhr": null
+        }
+    ],
+    "Febuary": [
+         {
+            "asr": null,
+            "date": "2019-01-01T00:00:00",
+            "fajr": "1900-01-01T12:12:00",
+            "isha": null,
+            "magrib": null,
+            "zuhr": null
+        },
+        {
+            "asr": null,
+            "date": "2019-01-02T00:00:00",
+            "fajr": null,
+            "isha": null,
+            "magrib": null,
+            "zuhr": null
+        }
+    ]
+}
